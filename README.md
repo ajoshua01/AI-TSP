@@ -29,6 +29,7 @@ as you go and set the Print method to produce that output that path.
 The greedy algo can call Print once it\'s done. 
 
 AJ Task List:
+- [] Graph Class
 - [] Random Graph Generator
 - [] Graph Visualizer
  
