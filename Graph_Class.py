@@ -5,17 +5,19 @@ Created on Fri Mar 26 23:31:12 2021
 
 @author: aaronjoshuaesq.
 """
+import random
 
 class Graph(object):
 
-    def __init__(self, graph_dict=None):
+    def __init__(self, graph_dict=None, nodes = 10):
         """ initializes a graph object 
             If no dictionary or None is given, 
             an empty dictionary will be used
         """
         if graph_dict == None:
-            graph_dict = {}
-        self.__graph_dict = graph_dict
+           graph_dict = {}
+           self.__graph_dict = graph_dict
+           self.randomize_graph(nodes)
 
     def vertices(self):
         """ returns the vertices of a graph """
@@ -35,6 +37,47 @@ class Graph(object):
         """
         if vertex not in self.__graph_dict:
             self.__graph_dict[vertex] = []
+            
+    def randomize_graph(self, nodes):
+        import random
+        x=0
+        self.__graph_dict = {}
+        while x < nodes:
+            self.__graph_dict[x]  = []
+            x=x+1
+        x = 0
+        for x in self.__graph_dict.keys():
+            y = 0
+            while y < random.randrange(3, nodes):
+                if y != x:
+                    newNode = random.randrange(nodes)
+                    self.__graph_dict[x].append((newNode, x))
+                    self.__graph_dict[newNode].append((x, x))
+                y=y+1
+    
+        """Pop any loops from the graph"""
+        for key, value in self.__graph_dict.items():
+            z=0
+            for edge in value:
+                if key == edge[0]:
+                    self.__graph_dict[key].pop(z)
+                    value.pop(z)
+                    print("popped %s" % edge[0])
+                z=z+1
+            x=x+1
+        """popping duplicates"""
+        for key, value in self.__graph_dict.items():
+            storedEdges = set()
+            z=0
+            for edge in value:
+                if edge[0] in storedEdges:
+                    print("%s: %s"%(key, value))
+                    print("Popping %s"%edge[0])
+                    print(storedEdges)
+                    value.pop(z)
+                else:
+                    storedEdges.add(edge[0])
+            z=z+1
 
     def add_edge(self, vertex, edge):
         """ assumes that edge is of type set, tuple or list; 
@@ -80,11 +123,11 @@ class Graph(object):
     
     location = ""
     def path_begin(self, start):
-        location = start
+        self.location = start
         return self.__graph_dict[start]
     
     def path_forward(step):
-        if location == "":
+        if self.location == "":
             print("Must begin the path before moving forward.")
             return None
         location = step
