@@ -6,9 +6,8 @@ I\'ve created a basic class for the graph data structure. Its based on a python
 edges and weights (as 'tuples'). We have a couple methods, specifically edges and 
 verticies, which each output a 'list'. 
 
-Probably before you get started, I need to create a random path generator 
-which I will include in the next push. I will get this done ASAP so the algo has
-something to work with. 
+I added a random graph generator to the initilization method. So now you can start playing with pathing 
+as soon as you create the object. 
 
 I\'m not sure how you want to work out the pathing. 
 
@@ -29,7 +28,8 @@ as you go and set the Print method to produce that output that path.
 The greedy algo can call Print once it\'s done. 
 
 AJ Task List:
-- [] Random Graph Generator
+- [x] Graph Class
+- [x] Random Graph Generator
 - [] Graph Visualizer
  
  KG Task List

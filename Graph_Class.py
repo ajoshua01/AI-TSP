@@ -39,7 +39,6 @@ class Graph(object):
             self.__graph_dict[vertex] = []
             
     def randomize_graph(self, nodes):
-        import random
         x=0
         self.__graph_dict = {}
         while x < nodes:
