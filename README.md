@@ -27,8 +27,10 @@ its origin. I\'ll give Graph_Class the ability to track and visualize your path
 as you go and set the Print method to produce that output that path.
 The greedy algo can call Print once it\'s done. 
 
-Sample Implementation:
-'''
+Sample Implementation: Pathing by moving to the first available node, regardless of 
+whether it has been seen before. 
+
+```
 from Graph_Class import Graph
 graph = Graph(nodes = 10)
 edge = graph.path_begin()[1][1]
@@ -37,7 +39,8 @@ nodes = 10
 for x in range(nodes):
     graph.path_forward(1)
 
-'''  
+```
+
 
 I'm still going to cleanup the visualization a bit so it renders in a single
 output. 
