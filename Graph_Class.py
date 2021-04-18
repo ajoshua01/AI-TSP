@@ -5,19 +5,21 @@ Created on Fri Mar 26 23:31:12 2021
 
 @author: aaronjoshuaesq.
 """
-import random
+
 
 class Graph(object):
-
+    
     def __init__(self, graph_dict=None, nodes = 10):
         """ initializes a graph object 
             If no dictionary or None is given, 
-            an empty dictionary will be used
-        """
+            an empty dictionary will be used"""
+        from TSPVisualizer import Visualizer
+        self.grapher = Visualizer()
         if graph_dict == None:
-           graph_dict = {}
-           self.__graph_dict = graph_dict
+           self.__graph_dict = {}
            self.randomize_graph(nodes)
+        self.__title = "" 
+          
 
     def vertices(self):
         """ returns the vertices of a graph """
@@ -39,6 +41,7 @@ class Graph(object):
             self.__graph_dict[vertex] = []
             
     def randomize_graph(self, nodes):
+        import random
         x=0
         self.__graph_dict = {}
         while x < nodes:
@@ -61,7 +64,6 @@ class Graph(object):
                 if key == edge[0]:
                     self.__graph_dict[key].pop(z)
                     value.pop(z)
-                    print("popped %s" % edge[0])
                 z=z+1
             x=x+1
         """popping duplicates"""
@@ -70,28 +72,25 @@ class Graph(object):
             z=0
             for edge in value:
                 if edge[0] in storedEdges:
-                    print("%s: %s"%(key, value))
-                    print("Popping %s"%edge[0])
-                    print(storedEdges)
                     value.pop(z)
                 else:
                     storedEdges.add(edge[0])
             z=z+1
 
-    def add_edge(self, vertex, edge):
-        """ assumes that edge is of type set, tuple or list; 
+    def add_edge(self, vertex, edge, weight):
+        """ Assumes that edge is of type set, tuple or list; 
             between two vertices can be multiple edges! 
         """
         edge = tuple(edge)
         if vertex in self.__graph_dict.keys():
 
             if self.__graph_dict[vertex] == []:
-               self.__graph_dict[vertex].append(edge)
+               self.__graph_dict[vertex].append([edge, weight])
             else:
                 if edge in self.__graph_dict[vertex]:
                     return None
                 else:
-                    self.__graph_dict[vertex].append(edge)
+                    self.__graph_dict[vertex].append([edge, weight])
         else:
             print("%s does not exist" %vertex)
         
@@ -112,25 +111,39 @@ class Graph(object):
         return edges
 
     def __str__(self):
-        res = "vertices: "
-        for k in self.__graph_dict:
-            res += str(k) + " "
-        res += "\nedges: "
-        for edge in self.__generate_edges():
-            res += str(edge) + " "
-        return res
+        self.grapher.draw_graph(title = self.__title)
+        return "Rendered"
     
-    location = ""
-    def path_begin(self, start):
-        self.location = start
-        return self.__graph_dict[start]
+    def path_begin(self):
+        """Start pathing by calling this method first so that a starting
+        location can be determined. It will output the edges of the starting 
+        node. To identify the node check the location attribute"""
+        import random
+        self.location = ""
+        self.location = random.choice(list(self.__graph_dict.keys()))
+        self.grapher.add_node(self.location)       
+        print(self)
+        print("Starting location: %s" % self.location)
+        return self.__graph_dict[self.location]
     
-    def path_forward(step):
+    def path_forward(self, step):
+        """The path foward takes a number (int) indicating which among the
+        list of edges you wish to path to next"""
         if self.location == "":
             print("Must begin the path before moving forward.")
             return None
-        location = step
-        return self.__graph_dict[step]
+        else:            
+            self.grapher.add_node(self.__graph_dict[self.location][step][0])
+            self.grapher.add_edge(self.location, self.__graph_dict[self.location][step][0], 
+                                  distance = self.__graph_dict[self.location][step][1])            
+            
+            
+            self.__title = "Travel %s km from node %s to node %s" % (self.__graph_dict[self.location][step][1],
+                                                     self.location,
+                                             self.__graph_dict[self.location][step][0])
+            self.location = self.__graph_dict[self.location][step][0]
+            print(self)
+            return self.__graph_dict[self.location]
     
     def is_connected(self, 
                      vertices_encountered = None, 
@@ -172,8 +185,11 @@ class Graph(object):
                 if extended_path: 
                     return extended_path
         return None
-    
-    def print(self):
-        print(self.__graph_dict)
+
+    def print_location(self):
+        if self.location == "":
+            return self.__graph_dict
+        else:
+            return self.location
     
 
