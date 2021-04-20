@@ -31,13 +31,29 @@ Sample Implementation: Pathing by moving to the first available node, regardless
 whether it has been seen before. 
 
 ```
+def greedy(visited, options, start):
+    if not visited:
+        visited.append(start)
+        print("Start: %s" % visited)
+    while len(visited) != len(known_nodes):
+        for iteration, option in enumerate(options):
+            if option[0] not in known_nodes:
+                known_nodes.append(option[0])
+            if option[0] not in visited:
+                visited.append(option[0])
+                greedy(visited, graph.path_forward(iteration), start)
+
+    print("Done!")
+    return visited_nodes
+
 from Graph_Class import Graph
-graph = Graph(nodes = 10)
-edge = graph.path_begin()[1][1]
-print(graph.location)
-nodes = 10
-for x in range(nodes):
-    graph.path_forward(1)
+num = 7
+visited_nodes = []
+known_nodes = []   
+graph = Graph(nodes = num)
+path = greedy(visited_nodes,graph.options , graph.location)                
+            
+      
 
 ```
 
