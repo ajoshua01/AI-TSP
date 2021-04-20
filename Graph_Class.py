@@ -18,7 +18,16 @@ class Graph(object):
         if graph_dict == None:
            self.__graph_dict = {}
            self.randomize_graph(nodes)
-        self.__title = "" 
+        self.__title = ""
+        """Start pathing by calling this method first so that a starting
+        location can be determined. It will output the edges of the starting 
+        node. To identify the node check the location attribute"""
+        import random
+        self.location = ""
+        self.location = random.choice(list(self.__graph_dict.keys()))
+        self.grapher.add_node(self.location)  
+        self.options = self.__graph_dict[self.location]
+        print(self)
           
 
     def vertices(self):
@@ -47,16 +56,14 @@ class Graph(object):
         while x < nodes:
             self.__graph_dict[x]  = []
             x=x+1
-        x = 0
-        for x in self.__graph_dict.keys():
+        for locale in self.__graph_dict.keys():
             y = 0
             while y < random.randrange(3, nodes):
                 if y != x:
                     newNode = random.randrange(nodes)
-                    self.__graph_dict[x].append((newNode, x))
-                    self.__graph_dict[newNode].append((x, x))
-                y=y+1
-    
+                    self.__graph_dict[locale].append((newNode, locale))
+                    self.__graph_dict[newNode].append((locale, locale))
+                y=y+1    
         """Pop any loops from the graph"""
         for key, value in self.__graph_dict.items():
             z=0
@@ -114,36 +121,22 @@ class Graph(object):
         self.grapher.draw_graph(title = self.__title)
         return "Rendered"
     
-    def path_begin(self):
-        """Start pathing by calling this method first so that a starting
-        location can be determined. It will output the edges of the starting 
-        node. To identify the node check the location attribute"""
-        import random
-        self.location = ""
-        self.location = random.choice(list(self.__graph_dict.keys()))
-        self.grapher.add_node(self.location)       
-        print(self)
-        print("Starting location: %s" % self.location)
-        return self.__graph_dict[self.location]
+
+        
     
     def path_forward(self, step):
         """The path foward takes a number (int) indicating which among the
         list of edges you wish to path to next"""
-        if self.location == "":
-            print("Must begin the path before moving forward.")
-            return None
-        else:            
-            self.grapher.add_node(self.__graph_dict[self.location][step][0])
-            self.grapher.add_edge(self.location, self.__graph_dict[self.location][step][0], 
-                                  distance = self.__graph_dict[self.location][step][1])            
-            
-            
-            self.__title = "Travel %s km from node %s to node %s" % (self.__graph_dict[self.location][step][1],
-                                                     self.location,
-                                             self.__graph_dict[self.location][step][0])
-            self.location = self.__graph_dict[self.location][step][0]
-            print(self)
-            return self.__graph_dict[self.location]
+        self.grapher.add_node(self.__graph_dict[self.location][step][0])
+        print("step %s" % (step))
+        self.grapher.add_edge(self.location, self.__graph_dict[self.location][step][0], 
+                              distance = self.__graph_dict[self.location][step][1])            
+        self.__title = "Travel %s km from node %s to node %s" % (self.__graph_dict[self.location][step][1],
+                                                 self.location,
+                                         self.__graph_dict[self.location][step][0])
+        self.location = self.__graph_dict[self.location][step][0]
+        print(self)
+        return self.__graph_dict[self.location]
     
     def is_connected(self, 
                      vertices_encountered = None, 
