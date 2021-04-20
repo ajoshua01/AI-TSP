@@ -27,7 +27,7 @@ its origin. I\'ll give Graph_Class the ability to track and visualize your path
 as you go and set the Print method to produce that output that path.
 The greedy algo can call Print once it\'s done. 
 
-Sample Implementation: Pathing by moving to the first available node, regardless of 
+Sample Implementation: Pathing by moving to the first never visited node regardless of 
 whether it has been seen before. 
 
 ```
