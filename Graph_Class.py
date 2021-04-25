@@ -33,6 +33,10 @@ class Graph(object):
     def vertices(self):
         """ returns the vertices of a graph """
         return list(self.__graph_dict.keys())
+    
+    def vertex(self, vertex):
+        """returns the verticles of a single node"""
+        return list(self.__graph_dict.get(vertex))
 
     def edges(self):
         """ returns the edges of a graph 
