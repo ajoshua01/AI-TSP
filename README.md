@@ -23,11 +23,16 @@ requires unreasonably many steps."
 So the pathing algorithim will need to keep a record of the cities its visited
 along the way g(x). You have a path forward method in the class which you can 
 use to generate the edges and distances of each step, until the class reaches
-its origin. I\'ll give Graph_Class the ability to track and visualize your path
-as you go and set the Print method to produce that output that path.
+its origin. I\'ll give Graph_Class the ability to visualize your path
+as you go and set the Print method to output a visualization of that path but it will not remember or retain the path.
 The greedy algo can call Print once it\'s done. 
 
+<<<<<<< HEAD
 Sample Implementation: Pathing by moving to the first never visited node.
+=======
+Sample Implementation: Pathing by moving to the first never visited node regardless of 
+whether it has been seen before. 
+>>>>>>> 2e5a6c17ce8ece164a9e37d9d0cd5a09c12d6dc9
 
 ```
 def greedy(visited, options, start):
@@ -50,8 +55,17 @@ num = 7
 visited_nodes = []
 known_nodes = []   
 graph = Graph(nodes = num)
+<<<<<<< HEAD
 path = greedy(visited_nodes,graph.options, graph.location)                
 ``` 
+=======
+path = greedy(visited_nodes,graph.options , graph.location)                
+            
+      
+
+```
+
+>>>>>>> 2e5a6c17ce8ece164a9e37d9d0cd5a09c12d6dc9
 
 I'm still going to cleanup the visualization a bit so it renders in a single
 output. 
