@@ -27,6 +27,7 @@ class Graph(object):
         self.location = random.choice(list(self.__graph_dict.keys()))
         self.grapher.add_node(self.location)  
         self.options = self.__graph_dict[self.location]
+        self.print_puzzle()
         print(self)
           
 
@@ -63,7 +64,7 @@ class Graph(object):
         for locale in self.__graph_dict.keys():
             y = 0
             while y < random.randrange(3, nodes):
-                if y != x:
+                if y != locale:
                     newNode = random.randrange(nodes)
                     self.__graph_dict[locale].append((newNode, locale))
                     self.__graph_dict[newNode].append((locale, locale))
@@ -88,6 +89,20 @@ class Graph(object):
                     storedEdges.add(edge[0])
             z=z+1
 
+    def print_puzzle(self):
+        import networkx as nx
+        G = nx.Graph()
+        for start, edges in self.__graph_dict.items():
+            G.add_node(start)
+            for destinations in edges:
+                G.add_node(destinations[0])
+                G.add_edge(start, destinations[0], weight = destinations[1])
+        pos = nx.spring_layout(G)
+        nx.draw_networkx_labels(G, pos)
+        nx.draw_networkx_edges(G, pos)
+        nx.draw_networkx_nodes(G, pos)
+        print("Graph Drawn")
+    
     def add_edge(self, vertex, edge, weight):
         """ Assumes that edge is of type set, tuple or list; 
             between two vertices can be multiple edges! 

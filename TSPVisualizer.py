@@ -37,7 +37,6 @@ class Visualizer:
             pos = nx.spring_layout(self.chart)
             # nodes
             import matplotlib.pyplot as plt
-         
             self.__fig.subplots(self.__numRows, 1, 'none')
             nx.draw_networkx_labels(self.chart, pos)
             nx.draw_networkx_edges(self.chart, pos)
