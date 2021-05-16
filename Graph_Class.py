@@ -79,15 +79,20 @@ class Graph(object):
                 z=z+1
             x=x+1
         """popping duplicates"""
-        for key, value in self.__graph_dict.items():
-            storedEdges = set()
-            z=0
-            for edge in value:
-                if edge[0] in storedEdges:
-                    value.pop(z)
-                else:
-                    storedEdges.add(edge[0])
-            z=z+1
+        self.removeDuplicates()
+
+    def removeDuplicates(self):
+        edges = {}
+        for node in self.__graph_dict.keys():
+            edges = set()
+            for edge in self.__graph_dict[node]:
+                edges.add(edge)
+            del  self.__graph_dict[node]
+            uniqueEdges = []
+            for unique in edges:
+                uniqueEdges.append(unique)
+                self.__graph_dict[node] = uniqueEdges
+            
 
     def print_puzzle(self):
         import networkx as nx
