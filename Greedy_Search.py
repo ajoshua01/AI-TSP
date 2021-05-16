@@ -15,10 +15,16 @@ graph = Graph()
 #visited nodes declaration - unused
 visitedNodes = [];
 
+#Subtracting like-values from Python is pretty weird when you're using lists. Here's a function to make it easier
+def diff(first, second):
+        second = set(second)
+        return [item for item in first if item not in second]
+
+
 #test prints to help comprehension
 print("graph location: ", graph.location)
 
-print("All adjacent nodes to our location: ", graph.vertex(graph.location))
+#print("All adjacent nodes to our location: ", graph.vertex(graph.location))
 
 
 
@@ -28,18 +34,38 @@ print("The value of the first element in the tuple[first element of the list], w
 print(vertexInnerTuple[0])
 
 #variable declarations
+#I know these two variables are lists but I named them before I declared them and at this point I'm afraid to refactor anything
 edgeArray = []
+nodeArray = []
 minValue = 20
 minimumValueIndex = 0
 stepCounter = 0
 
 #stepCounter is an improper condition for the loop - it is only used to prevent race conditions while testing
 #TODO: replace this condition with the proper condition
-while (stepCounter < 6):
+while (stepCounter < 10):
+    print("Here's where we are: ", graph.location)
+    print("Here's what is around us: ", graph.vertex(graph.location))
+    vertexList = graph.vertex(graph.location)
+    
+    visitedNodes.append(graph.location)
+    edgeArray.clear()
+    nodeArray.clear()
+    minValue = 20
+    #Time to build an array of the nearby nodes so we can look at them and traverse
+    #We're not interested in nodes we have history with, so we skip them.
+    
     for x in vertexList:
-        print("vertex Inner Tuple value for List value ", x, ": ", x[0])
-        edgeArray.append(x[0]) #Build an array, edgeArray, of all distances between potential nodes
+        #print("vertex Inner Tuple value for List value ", x, ": ", x[0])
+        if (x[1] in visitedNodes):
+            edgeArray.append(1000) #Build an array, edgeArray, of all distances between potential nodes
+            nodeArray.append(x[1]) #Build an array, nodeArray, with the 'address' of all the nearby nodes
+        else: 
+            edgeArray.append(x[0]) #Build an array, edgeArray, of all distances between potential nodes
+            nodeArray.append(x[1]) #Build an array, nodeArray, with the 'address' of all the nearby nodes
     print("array of all edges: ", edgeArray)
+    print("Node history: ", visitedNodes)
+    print("Nodes we haven't visited that are adjacent: ", nodeArray)
     
     for x in range(0, len(edgeArray)):
         if(edgeArray[x] < minValue):
@@ -47,8 +73,15 @@ while (stepCounter < 6):
             minimumValueIndex = edgeArray.index(minValue)
     print("minimum distance value in the edgeArray: ", minValue)
     print("Index value of the minimum value element: ", minimumValueIndex)
-    graph.path_forward(minimumValueIndex)
+    if (minValue == 20):
+        graph.path_forward(visitedNodes[-1])
+    else:   
+        graph.path_forward(minimumValueIndex)
     stepCounter += 1
+    
+#find closest node.
+#if node is in list, remove it from potential addresses and search again
+
 
 
 #Basic idea of algorithm procedure below
